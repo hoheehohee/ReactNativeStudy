@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
   HelloWord,
   Bananas,
-  LotsOfGreetings
+  LotsOfGreetings,
+  BlinkApp
 } from './src';
+
 
 import {
   Platform,
@@ -36,6 +38,7 @@ export default class App extends Component<Props> {
         <HelloWord />
         <Bananas />
         <LotsOfGreetings />
+        <BlinkApp />
       </View>
     );
   }
