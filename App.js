@@ -3,7 +3,8 @@ import {
   HelloWord,
   Bananas,
   LotsOfGreetings,
-  BlinkApp
+  BlinkApp,
+  LotsOfStyles
 } from './src';
 
 
@@ -39,6 +40,7 @@ export default class App extends Component<Props> {
         <Bananas />
         <LotsOfGreetings />
         <BlinkApp />
+        <LotsOfStyles />
       </View>
     );
   }
