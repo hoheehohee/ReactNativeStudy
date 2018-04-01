@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default class LotsOfStyles extends Component {
-  renter() {
+  render() {
     return (
       <View>
         <Text style={styles.red}>just red</Text>
