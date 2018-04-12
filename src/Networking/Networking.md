@@ -6,7 +6,7 @@
 	```javascript
 	fatch('https://mywebsite.com/mydata.json')
 	```
-	- HTTP요청을 사용자의 정의 할 수 있는 두번째 인수를 제공
+- HTTP요청을 사용자의 정의 할 수 있는 두번째 인수를 제공
 	추가 헤더를 지정하거나 POST 요청 가능
 	```javascript
 	fetch('https://mywebsite.com/endpoint/', {
@@ -40,15 +40,15 @@ Featch 메소드는 비동기 방식으로 작동하는 코드를 작성하는 �
 	```javascript
 	async function getMoviesFromApi() {
   try {
-    let response = await fetch(
-      'https://facebook.github.io/react-native/movies.json'
-    );
-    let responseJson = await response.json();
-    return responseJson.movies;
-  } catch (error) {
-    console.error(error);
-  }
-}
+	    let response = await fetch(
+	      'https://facebook.github.io/react-native/movies.json'
+	    );
+	    let responseJson = await response.json();
+	    return responseJson.movies;
+	  } catch (error) {
+	    console.error(error);
+	  }
+	}
 	```
 
 ### 다른 네트워킹 라이브러리
