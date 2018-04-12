@@ -1,6 +1,7 @@
 import HelloWord from './HelloWord';
 import Bananas from './Bananas';
 import LotsOfGreetings from './LotsOfGreetings';
+import FetchExample from './Networking/FetchExample';
 import BlinkApp from './State/BlinkApp';
 import LotsOfStyles from './Style/LotsOfStyles';
 
@@ -9,5 +10,6 @@ export {
   Bananas,
   LotsOfGreetings,
   BlinkApp,
-  LotsOfStyles
+  LotsOfStyles,
+  FetchExample
 }

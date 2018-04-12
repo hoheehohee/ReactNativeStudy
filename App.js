@@ -4,7 +4,8 @@ import {
   Bananas,
   LotsOfGreetings,
   BlinkApp,
-  LotsOfStyles
+  LotsOfStyles,
+  FetchExample
 } from './src';
 
 
@@ -41,6 +42,7 @@ export default class App extends Component<Props> {
         <LotsOfGreetings />
         <BlinkApp />
         <LotsOfStyles />
+        <FetchExample />
       </View>
     );
   }
