@@ -106,7 +106,7 @@
 
 
 ## Platform Specific Code
-- 교차 플랫폼 앱을 제작할 때 최대한 많은 코드를 재사용하고 싶을 것입니다. 예를 들어 iOS 및 Android 용으로 별도의 시각적 구성 요소를 구현하려는 경우와 같이 코드가 다른 경우에는 시나리오가 발생할 수 있습니다.
+- 교차 플랫폼 앱을 제작할 때 최대한 많은 코드를 재사용하고 싶을 것입니다. 예를 들어 iOS 및 Android 용으로 별도의 시각적 컨포넌트를 구현하려는 경우와 같이 코드가 다른 경우에는 시나리오가 발생할 수 있습니다.
 - React Native는 코드를 쉽게 구성하고 플랫폼별로 분리하는 두 가지 방법을 제공
 	- 플랫폼 모듈 사용
 	- 플랫폼 별 파일 확장명 사용\
@@ -180,10 +180,128 @@ React Native는 파일에 .ios가있을 때이를 감지한다. 또는 .android.
 	BigButton.ios.js
 	BigButton.android.js
 	```
-- 그런 다음 구성 요소를 다음과 같이 요구할 수 있다.
+- 그런 다음 컨포넌트를 다음과 같이 요구할 수 있다.
 	```javascript
 	const BigButton = require('./BigButton');
 	```
 React Native는 실행중인 플랫폼을 기반으로 올바른 파일을 자동으로 선택한다.
 
 ## Navigating Between Screens
+- 모바일 앱은 거의 단일 화면으로 구성된다. 여러 화면의 표시 및 관리는 일반적으로 탐색기로 처리된다.
+- 이 가이드는 React Native에서 사용할 수있는 다양한 탐색 요소를 다룬다 네비게이션을 시작하기 만한다면 React Navigation을 사용하는 것이 좋다.
+React Navigation은 iOS와 Android 모두에서 일반적인 스택 탐색 및 탭 탐색 패턴을 제공하는 기능과 함께 사용하기 쉬운 탐색 솔루션을 제공한다. 이것은 자바 스크립트 구현이므로 redux와 같은 상태 관리 라이브러리와 통합 할 때 융통성은 물론 구성 가능성이 극대화된다.
+- iOS만을 타겟팅하는 경우 최소한의 구성으로 기본 모양과 느낌을 제공하는 방법으로 NavigatorIOS를 확인하는 것이 좋다. 이는 네이티브 UINavigationController 클래스 주위에 래퍼를 제공하기 때문이다. 그러나이 컨포넌트는 Android에서는 작동하지 않는다.
+- iOS와 Android에서 기본 모양과 느낌을 얻고 싶거나 React Native 네비게이션을 이미 관리하고있는 앱에 통합하고 있다면, 다음 라이브러리는 native-navigation, react-native-navigation 같은 두 플랫폼에서 네이티브 네비게이션을 제공합니다.
+
+### React Navigation
+- 네비게이션에 대한 커뮤니티 솔루션은 개발자가 단 몇 줄의 코드만으로 앱 화면을 설정할 수있는 독립형 라이브러리
+	```javascript
+	npm install --save react-navigation
+	```
+- 그런 다음 홈 화면과 프로필 화면으로 빠르게 앱을 만들 수 있다
+	```javascript
+	import {
+	  StackNavigator,
+	} from 'react-navigation';
+
+	const App = StackNavigator({
+	  Home: { screen: HomeScreen },
+	  Profile: { screen: ProfileScreen },
+	});
+	```
+- 각 화면 컨포넌트는 머리글 제목과 같은 탐색 옵션을 설정할 수 있다. 네비게이션 소품의 액션 크리에이터를 사용하여 다른 스크린에 링크 할 수 있다.
+	```javascript
+	class HomeScreen extends React.Component {
+	  static navigationOptions = {
+	    title: 'Welcome',
+	  };
+	  render() {
+	    const { navigate } = this.props.navigation;
+	    return (
+	      <Button
+	        title="Go to Jane's profile"
+	        onPress={() =>
+	          navigate('Profile', { name: 'Jane' })
+	        }
+	      />
+	    );
+	  }
+	}
+	```
+- React Navigation 라우터를 사용하면 탐색 논리를 쉽게 재정의 하거나 이를 통합 할 수 있다.
+라우터는 서로 중첩 될 수 있기 때문에 개발자는 광범위하게 변경하지 않고도 앱의 한 영역에 대한 탐색 로직을 무시할 수 있다
+- React Navigation의 뷰는 네이티브 컨포넌트와 애니메이션 라이브러리를 사용하여 네이티브 스레드에서 실행되는 60fps 애니메이션을 제공한다. 또한 애니메이션과 제스처를 쉽게 사용자 지정할 수 있다.
+- React Navigation에 대한 전체 소개는 **React Navigation Getting Started Guide** 를 따르거나 **Navigator** 에 대한 소개와 같은 다른 문서를 찾아보십시오.
+
+### NavigatorIOS
+- NavigatorIOS는 실제로 UINavigationController와 유사하게 보이며 실제로 UINavigationController 위에 놓여 있기 때문에 느껴진다.
+	```javascript
+	<NavigatorIOS
+	  initialRoute={{
+	    component: MyScene,
+	    title: 'My Initial Scene',
+	    passProps: {myProp: 'foo'},
+	  }}
+	/>
+	```
+- NavigatorIOS는 다른 탐색 시스템과 마찬가지로 경로를 사용하여 화면을 표현하지만 몇 가지 중요한 차이점이 있다.
+렌더링 될 실제 컨포넌트는 경로의 컨포넌트 키를 사용하여 지정할 수 있다. 이 컨포넌트로 전달해야하는 모든 소품을 passProps에 지정할 수 있다.
+"네비게이터"객체는 컨포넌트에 소품으로 자동 전달되므로 필요에 따라 push 및 pop을 호출 할 수 있다.
+- NavigatorIOS는 기본 UIKit 탐색 기능을 활용하므로 뒤로 버튼과 제목이있는 탐색 모음을 자동으로 렌더링한다.
+	```javascript
+	import React from 'react';
+	import PropTypes from 'prop-types';
+	import {Button, NavigatorIOS, Text, View} from 'react-native';
+
+	export default class NavigatorIOSApp extends React.Component {
+	  render() {
+	    return (
+	      <NavigatorIOS
+	        initialRoute={{
+	          component: MyScene,
+	          title: 'My Initial Scene',
+	          passProps: {index: 1},
+	        }}
+	        style={{flex: 1}}
+	      />
+	    );
+	  }
+	}
+
+	class MyScene extends React.Component {
+	  static propTypes = {
+	    route: PropTypes.shape({
+	      title: PropTypes.string.isRequired,
+	    }),
+	    navigator: PropTypes.object.isRequired,
+	  };
+
+	  constructor(props, context) {
+	    super(props, context);
+	    this._onForward = this._onForward.bind(this);
+	  }
+
+	  _onForward() {
+	    let nextIndex = ++this.props.index;
+	    this.props.navigator.push({
+	      component: MyScene,
+	      title: 'Scene ' + nextIndex,
+	      passProps: {index: nextIndex},
+	    });
+	  }
+
+	  render() {
+	    return (
+	      <View>
+	        <Text>Current Scene: {this.props.title}</Text>
+	        <Button
+	          onPress={this._onForward}
+	          title="Tap me to load the next scene"
+	        />
+	      </View>
+	    );
+	  }
+	}
+
+	```
+- 이 컨포넌트에 대한 자세한 내용은 **NavigatorIOS** 참조 문서를 확인하세요~.
