@@ -29,7 +29,7 @@
 	3. 전역 이름 공간이 없다. 즉 이름 충돌에 대해 걱정할 필요가 없다.
 	4. 실제로 사용 된 이미지 만 앱에 패키지된다.
 	5. 이미지 추가 및 변경에는 앱 재 컴파일이 필요하지 않지만, 정상적으로 시뮬레이터를 새로 고침해준다.
-	6. packager는 이미지 크기를 알고 있으므로 코드에서 복제 할 필요가 없습니다.
+	6. packager는 이미지 크기를 알고 있으므로 코드에서 복제 할 필요가 없다.
 	7. 이미지는 npm 패키지를 통해 배포 할 수 있다.
 
 - 이 기능을 사용하려면 필요에 따라 이미지 이름을 정적으로 알아야한다.
@@ -148,7 +148,7 @@ iOS에서 [App Transport Security](https://github.com/facebook/react-native-webs
 정확히 일치하는 항목이 있으면 React Native가 선택한다, 그렇지 않으면 가까운 크기에서 크기를 재조정할 때 흐려지는것을 방지하기 위해 적어도 50% 더 큰 첫번째 것을 사용하게된다. 이 모든 것은 기본적으로 이루어 지므로 지루한 (그리고 오류가 발생하기 쉬운) 코드를 작성하는 것에 대해 걱정할 필요가 없다.
 
 ## Why Not Automatically Size Everything?: 왜 자동으로 크기를 조정하지 않습니까?
-- 브라우저에서 이미지에 크기를 지정하지 않으면 브라우저는 0x0 요소를 렌더링하고 이미지를 다운로드 한 다음 올바른 크기로 이미지를 렌더링한다. 이 문제의 가장 큰 문제점은 이미지가로드 될 때 UI가 주위를 뛰어 넘을 것이라는 것입니다. 이는 매우 나쁜 사용자 환경을 만든다.
+- 브라우저에서 이미지에 크기를 지정하지 않으면 브라우저는 0x0 요소를 렌더링하고 이미지를 다운로드 한 다음 올바른 크기로 이미지를 렌더링한다. 이 문제의 가장 큰 문제점은 이미지가로드 될 때 UI가 주위를 뛰어 넘을 것이라는 것이다. 이는 매우 나쁜 사용자 환경을 만든다.
 React Native에서이 동작은 의도적으로 구현되지 않는다. 개발자가 원격 이미지의 크기 (또는 종횡비)를 미리 알면 더 많은 작업을 수행 할 수 있지만 더 나은 사용자 환경을 제공 할 수 있다고 믿는다.
 `require ('./my-icon.png')` 구문을 통해 앱 번들에서 로드 된 정적 이미지의 크기는 장착시 즉시 사용할 수 있으므로 자동으로 크기가 조정될 수 있다.
 
@@ -165,6 +165,11 @@ React Native에서이 동작은 의도적으로 구현되지 않는다. 개발�
 	```
 - 인프라 측면에서 볼 때이 개체에 메타 데이터를 첨부 할 수 있기 때문이다. 예를 들어 `require('./ my-icon.png')`를 사용하는 경우 실제 위치와 크기에 대한 정보를 추가한다 (이 사실에 의존하지 않고 나중에 변경 될 수 있다). 이것은 미래의 교정이기도 한다. 예를 들어, `{uri : ...}`를 출력하는 대신에, 어떤 시점에서 스프라이트를 지원하고 싶을 수도 있다.
 `{uri : ..., crop : {left : 10, top : 50, width : 20, height : 40}}`을 출력하고 모든 기존 호출 사이트에서 스프라이트를 투명하게 지원할 수 있다.
+
+
+
+## Background Image via Nesting
+- 웹에 익숙한 개발자의 일반적인 기능 요청은 `background-image`이다. 이 사용 사례를 처리하려면, 당신은 <Image>와 같은 props을 가지고있는 <ImageBackground> components를 사용하고, 그 위에 무엇이든 children을 추가한다.
 - 구현이 매우 간단하기 때문에 어떤 경우에는 `<ImageBackground>`를 사용하지 않을 수도 있다.
 - 더 많은 통찰력을 얻으려면 `<ImageBackground>`의 [source code](https://github.com/facebook/react-native/blob/master/Libraries/Image/ImageBackground.js)를 참조하고 필요한 경우 사용자 정의 구성 요소를 직접 작성하라.
 	```javascript
@@ -174,3 +179,133 @@ React Native에서이 동작은 의도적으로 구현되지 않는다. 개발�
 	  </ImageBackground>
 	);
 	```
+## iOS Border Radius Styles (iOS 테두리 반경 스타일)
+- 다음과 같은 모서리 특정 테두리 반경 스타일 속성은 현재 iOS의 이미지 components에서 무시 된다.
+	- `borderTopLeftRadius`
+	- `borderTopRightRadius`
+	- `borderBottomLeftRadius`
+	- `borderBottomRightRadius`
+
+## Off-thread Decoding
+- 이미지 디코딩은 프레임 가치 이상의 시간이 소요될 수 있다. 이는 메인 스레드에서 디코딩이 이루어지기 때문에 웹상의 프레임 드롭의 주요 소스 중 하나이다.
+React Native에서 이미지 디코딩은 다른 스레드에서 수행된다. 실제로는 이미 이미지를 다운로드하지 않은 상태에서 케이스를 처리해야하므로 디코딩 중에 더 많은 프레임에 대한 자리 표시자를 표시 할 때 코드를 변경할 필요가 없다.
+
+
+# Animations
+- React Native는 두 가지 보완적인 애니메이션 시스템을 제공한다.
+	- `Animated`: 특정 값에 대한 세분화 된 interactive control를 위한 애니메이션
+	- `LayoutAnimationAPI`: 글로벌 애니메이션
+
+## Animated API
+- 입력과 출력 사이의 선억전 관계, 중간에 구성 가능한 변환, 시간 기반 애니메이션 실행을 제어하는 간단한 `start/stop` method에 중점을 둔다.
+- 애니메이션은 4 개의 애니메이션 가능 구성 요소 유형을 내 보낸다: View, Text, Image 및 ScrollView가 있지만 Animated.createAnimatedComponent()를 사용하여 직접 만들 수도 있다.
+	```javascript
+	import React from 'react';
+	import { Animated, Text, View } from 'react-native';
+
+	class FadeInView extends React.Component {
+	  state = {
+	    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+	  }
+
+	  componentDidMount() {
+	    Animated.timing(                  // Animate over time
+	      this.state.fadeAnim,            // The animated value to drive
+	      {
+	        toValue: 1,                   // Animate to opacity: 1 (opaque)
+	        duration: 10000,              // Make it take a while
+	      }
+	    ).start();                        // Starts the animation
+	  }
+
+	  render() {
+	    let { fadeAnim } = this.state;
+
+	    return (
+	      <Animated.View                 // Special animatable View
+	        style={{
+	          ...this.props.style,
+	          opacity: fadeAnim,         // Bind opacity to animated value
+	        }}
+	      >
+	        {this.props.children}
+	      </Animated.View>
+	    );
+	  }
+	}
+
+	// You can then use your `FadeInView` in place of a `View` in your components:
+	export default class App extends React.Component {
+	  render() {
+	    return (
+	      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+	        <FadeInView style={{width: 250, height: 50, backgroundColor: 'powderblue'}}>
+	          <Text style={{fontSize: 28, textAlign: 'center', margin: 10}}>Fading in</Text>
+	        </FadeInView>
+	      </View>
+	    )
+	  }
+	}
+	```
+
+
+# Accessibility (접근성)
+
+## Native App Accessibility (iOS and Android) (기본 앱 접근성)
+- iOS와 Android 모두 장애가있는 사용자가 앱에 액세스 할 수 있도록하기위한 API를 제공한다. 또한 두 플랫폼 모두 시각 장애인 용 화면 판독기 VoiceOver (iOS) 및 TalkBack (Android)과 같은 번들 형 보조 기술을 제공 한다. 마찬가지로 React Native에는 개발자가 앱을 더 쉽게 이용할 수 있도록 지원하는 API가 포함되었다.
+참고로, iOS와 Android는 접근 방식이 약간 다르므로 React Native 구현은 플랫폼에 따라 다를 수 있다.
+
+	이 문서 외에 React Native 접근성에 대한이 [블로그 게시물](https://code.facebook.com/posts/435862739941212/making-react-native-apps-accessible/)이 유용 할 것이다.
+
+## Making Apps Accessible
+
+### Accessibility properties
+
+####accessible (iOS, Android)
+- true 인 경우보기가 액세스 가능성 요소임을 나타낸다. view가 접근성 요소 인 경우 하위 요소를 선택 가능한 단일 components로 그룹화한다. 기본적으로 모든 터치 가능한 요소에 액세스 할 수 있다.
+- Android의 경우, 반응 네이티브 뷰의 accessible = {true} 속성은 네이티브 focusable = {true}로 변환된다.
+	```javascript
+	<View accessible={true}>
+	  <Text>text one</Text>
+	  <Text>text two</Text>
+	</View>
+	```
+- 위 예제에서 'text onw'과 'text two'에 대해 접근성 포커스를 별도로 가져올 수 없다. 대신 우리는 '접근 가능한'속성을 가진 부모보기에 초점을 맞춘다.
+
+#### accessibilityLabel (iOS, Android) (접근성 라벨 (iOS, Android))
+- view가 액세스 가능한 것으로 표시되면 VoiceOver를 사용하는 사람들이 선택한 요소를 알 수 있도록 view에 accessibilityLabel을 설정하는 것이 좋다.
+- VoiceOver는 사용자가 관련 요소를 선택할 때 이 문자열을 읽는다.
+	```javascript
+		<TouchableOpacity
+		  accessible={true}
+		  accessibilityLabel={'Tap me!'}
+		  onPress={this._onPress}>
+		  <View style={styles.button}>
+		    <Text style={styles.buttonText}>Press me!</Text>
+		  </View>
+		</TouchableOpacity>
+	```
+- 위의 예에서 TouchableOpacity 요소의 accessibilityLabel은 기본적으로 "Press me!"로 설정된다.
+- 레이블은 공백으로 구분 된 모든 Text 노드 하위를 연결하여 구성된다.
+
+#### accessibilityTraits (iOS)
+- 접근성 특성은 사람이 VoiceOver를 사용하여 선택한 요소의 종류를 알려 준다.
+이 요소가 label? button? header? 이 질문은 `accessibilityTraits`에 의해 답변된다.
+- 사용하려면 `accessibilityTraits` 속성을 접근성 특성 문자열 중 하나 (또는 ​​배열 배열)로 설정한다.
+	- none: 요소에 특성이 없을 때 사용된다.
+	- button: 버튼으로 처리해야 할 때 사용된다.
+	- link: 링크로 취급되어야 할 때 사용된다.
+	- header:  콘텐츠 섹션의 헤더 (예 : 탐색 바의 제목)로 작동 할 때 사용된다.
+	- search: 텍스트 필드 요소도 검색 필드로 취급해야 할 때 사용된다.
+	- image: 이미지로 처리해야 할 때 사용된다. 예를 들어 버튼이나 링크와 결합 할 수 있다.
+	- selected: 요소가 선택 될 때 사용된다. 예를 들어, 테이블의 선택된 행 또는 세그먼트 화 된 컨트롤 내의 선택된 버튼.
+	- plays: 요소가 활성화되면 자체 사운드를 재생할 때 사용된다.
+	- key: 요소가 키보드 키의 역할을 할 때 사용된다.
+	- text: 요소를 변경할 수없는 정적 텍스트로 처리해야 할 때 사용된다.
+	- summary: 앱이 처음 시작될 때 요소를 사용하여 앱의 현재 상태를 빠르게 요약 할 수있을 때 사용된다. 예를 들어, 날씨가 처음 시작될 때, 오늘의 기상 조건을 가진 요소는이 특성으로 표시된다.
+	- disabled: 컨트롤이 활성화되어 있지 않고 사용자 입력에 응답하지 않는 경우에 사용된다.
+	- fequentUpdates: 요소가 레이블 또는 값을 자주 업데이트하지만 알림을 보내지 않는 경우에 사용된다. 내게 필요한 옵션 지원 클라이언트가 변경 사항을 폴링 할 수있게합니다. 스톱워치가 그 예이다.
+	- startsMedia: 요소를 활성화 할 때 VoiceOver와 같은 보조 기술의 출력에 의해 중단되어서는 안되는 미디어 세션 (예 : 영화 재생, 오디오 녹음)이 시작될 때 사용된다.
+	- adjustable: 요소를 "adjustable" 할 수있는 경우 (예 : 슬라이더)에 사용된다.
+	- allowsDirectInteraction: 요소가 VoiceOver 사용자의 직접 터치 상호 작용을 허용 할 때 사용된다 (예 : 피아노 키보드를 나타내는보기).
+	- pageTurn: VoiceOver가 요소의 내용을 읽는 것을 끝내면 다음 페이지로 스크롤해야한다는 것을 VoiceOver에 알려준다.
