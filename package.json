@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "material-ui": "^1.0.0-beta.43",
+    "native-base": "^2.4.4",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.2",
     "react-native-material-design": "^0.3.7"

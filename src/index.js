@@ -4,6 +4,7 @@ import LotsOfGreetings from './LotsOfGreetings';
 import FetchExample from './Networking/FetchExample';
 import BlinkApp from './State/BlinkApp';
 import LotsOfStyles from './Style/LotsOfStyles';
+import WatchProject from './containers/WatchProject'
 
 export {
   HelloWord,
@@ -11,5 +12,6 @@ export {
   LotsOfGreetings,
   BlinkApp,
   LotsOfStyles,
-  FetchExample
+  FetchExample,
+  WatchProject
 }

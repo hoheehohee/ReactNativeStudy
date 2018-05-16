@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native-material-design';
+import { Container, Header, Content, Button, Text } from 'native-base';
 import {
   HelloWord,
   Bananas,
   LotsOfGreetings,
   BlinkApp,
   LotsOfStyles,
-  FetchExample
+  FetchExample,
+  WatchProject
 } from './src';
 
 
 import {
   Platform,
   StyleSheet,
-  Text,
-  View
+  View,
+  NavigatorIOS
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -27,12 +28,33 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
 
+  render() {
+    return (
+      <NavigatorIOS
+        initialRoute={{
+          component: MyView,
+          title: 'Main',
+          passProps: {index: 1},
+        }}
+        style={{flex: 1}}
+      />
+    );
+  }
+}
+
+class MyView extends Component {
+
   move = () => {
-    console.log(11);
+    let nextIndex = ++this.props.index;
+    this.props.navigator.push({
+      component: WatchProject,
+      title: 'Watch Project',
+      pssProps: { index: nextIndex }
+    })
   }
 
   render() {
-    return (
+    return(
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!!
@@ -49,9 +71,11 @@ export default class App extends Component<Props> {
         <BlinkApp />
         <LotsOfStyles />
         <FetchExample />
-        <Button value="NORMAL FLAT" onPress={()=> console.log("I pressed a flat button")} />
+        <Button block primary onPress={this.move}>
+          <Text>Go Watch Project</Text>
+        </Button>
       </View>
-    );
+    )
   }
 }
 
