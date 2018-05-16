@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-native-material-design';
 import {
   HelloWord,
   Bananas,
@@ -25,6 +26,11 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  move = () => {
+    console.log(11);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -43,6 +49,7 @@ export default class App extends Component<Props> {
         <BlinkApp />
         <LotsOfStyles />
         <FetchExample />
+        <Button value="NORMAL FLAT" onPress={()=> console.log("I pressed a flat button")} />
       </View>
     );
   }
@@ -54,6 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    marginBottom: 100
   },
   welcome: {
     fontSize: 20,
