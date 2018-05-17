@@ -14,7 +14,7 @@ class WatchProject extends Component {
 		times: {
 			date: moment().format("YYYY년 MM월 DD일"),
 			time: moment().format("h:mm:ss a"),
-			timeType: "24hour",
+			timeType: "12hour",
 			day: moment().format('dddd')
 		}
 
