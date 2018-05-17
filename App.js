@@ -65,12 +65,12 @@ class MyView extends Component {
         <Text style={styles.instructions}>
           {instructions}
         </Text>
-        <HelloWord />
+        {/* <HelloWord />
         <Bananas />
         <LotsOfGreetings />
         <BlinkApp />
         <LotsOfStyles />
-        <FetchExample />
+        <FetchExample /> */}
         <Button block primary onPress={this.move}>
           <Text>Go Watch Project</Text>
         </Button>
