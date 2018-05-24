@@ -15,7 +15,9 @@ import {
   Platform,
   StyleSheet,
   View,
-  NavigatorIOS
+  NavigatorIOS,
+  ScrollView,
+  FlatList
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -55,26 +57,13 @@ class MyView extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        {/* <HelloWord />
-        <Bananas />
-        <LotsOfGreetings />
-        <BlinkApp />
-        <LotsOfStyles />
-        <FetchExample /> */}
-        <Button block primary onPress={this.move}>
-          <Text>Go Watch Project</Text>
-        </Button>
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Button block primary onPress={this.move}>
+            <Text>Go Watch Project</Text>
+          </Button>
+        </View>
+      </ScrollView>
     )
   }
 }

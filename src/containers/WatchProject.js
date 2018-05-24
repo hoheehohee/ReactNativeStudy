@@ -24,6 +24,10 @@ class WatchProject extends Component {
 		this.TimerFunc();
 	}
 
+	componentWillUnmount() {
+		clearInterval(this.timerID);
+	}
+
 	formatDayFunc = (day) => {
 		let result = day;
 		switch (day) {
@@ -41,7 +45,7 @@ class WatchProject extends Component {
 
 	TimerFunc = async() => {
 
-		setInterval(() => {
+		this.timerID = setInterval(() => {
 			const { timeType } = this.state;
 			this.setState({
 				times: {
@@ -59,7 +63,7 @@ class WatchProject extends Component {
 	}
 
 	changeColor = (color) => {
-
+		// alert(color)
     if(color === '#fff' || color === '#e4d5a7') {
       this.setState({ color: '#000000'});
     }else {
@@ -97,9 +101,10 @@ class WatchProject extends Component {
 
 		const { backroundColor, color, nowtime, times, isColorOpen } = this.state;
     const colors = [
-      '#fff', '#434343', '#7d112c', '#563a85', '#232c62', '#0e6f91', '#28643f', '#e4d5a7'
-    ]
-
+			['#fff', '#434343', '#7d112c'],
+			['#563a85', '#232c62', '#0e6f91'],
+			['#28643f', '#e4d5a7', '#000000']
+		]
 		return(
 			<View style={{flex: 1, marginTop: 65, backgroundColor: backroundColor}}>
 				<View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 10, paddingRight: 10}}>
@@ -109,20 +114,24 @@ class WatchProject extends Component {
 				{
 					isColorOpen
 					? (
-						<View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-              {
-                colors.map((items, index) => (
-                  <ColorList
-                    key={index}
-                    color={items}
-                    selectedColor={backroundColor}
-                    changeColor={this.changeColor}
-                  />
-                ))
-              }
+						<View style={{
+							flex: 1, flexDirection: 'column', width: '100%',
+							alignItems: 'flex-end', marginTop: 55, paddingRight: 50,
+							position: 'absolute', zIndex: 9}}>
+							{
+								colors.map((items, idx) => (
+									<ColorList
+										key={idx}
+										color={items}
+										selectedColor={backroundColor}
+										changeColor={this.changeColor}
+									/>
+								))
+							}
 						</View>
 					): null
 				}
+
         <View style={{
 					flex: 9,
 					flexDirection: 'column',
