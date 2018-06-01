@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, DatePickerIOS, ActionSheetIOS, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, DatePickerIOS, ActionSheetIOS, Alert, TouchableOpacity, Animated } from 'react-native';
 import { Icon, ActionSheet } from 'native-base';
 import { ColorList } from '../components';
 import moment from 'moment-timezone';
@@ -16,8 +16,8 @@ class WatchProject extends Component {
 			time: moment().format("h:mm:ss a"),
 			timeType: "12hour",
 			day: moment().format('dddd')
-		}
-
+		},
+		fadeAnim: new Animated.Value(0)
 	}
 
 	componentWillMount() {
@@ -59,11 +59,23 @@ class WatchProject extends Component {
 
 	colorOpen = () => {
 		const { isColorOpen } = this.state;
+		if(!isColorOpen) {
+			Animated.timing(
+				this.state.fadeAnim,
+				{
+					toValue: 1,
+					duration: 2500,
+				}
+			).start();
+		}else {
+			this.setState({ fadeAnim : new Animated.Value(0)})
+		}
 		this.setState({ isColorOpen: !isColorOpen });
 	}
 
 	changeColor = (color) => {
 		// alert(color)
+		this.setState({ fadeAnim : new Animated.Value(0)})
     if(color === '#fff' || color === '#e4d5a7') {
       this.setState({ color: '#000000'});
     }else {
@@ -99,7 +111,7 @@ class WatchProject extends Component {
 
 	render() {
 
-		const { backroundColor, color, nowtime, times, isColorOpen } = this.state;
+		const { backroundColor, color, nowtime, times, isColorOpen, fadeAnim } = this.state;
     const colors = [
 			['#fff', '#434343', '#7d112c'],
 			['#563a85', '#232c62', '#0e6f91'],
@@ -114,7 +126,9 @@ class WatchProject extends Component {
 				{
 					isColorOpen
 					? (
-						<View style={{
+						<Animated.View style={{
+							...this.props.style,
+          		opacity: fadeAnim,
 							flex: 1, flexDirection: 'column', width: '100%',
 							alignItems: 'flex-end', marginTop: 55, paddingRight: 50,
 							position: 'absolute', zIndex: 9}}>
@@ -128,7 +142,7 @@ class WatchProject extends Component {
 									/>
 								))
 							}
-						</View>
+						</Animated.View>
 					): null
 				}
 

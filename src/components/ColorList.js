@@ -1,5 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native';
+
 const ColorList = ({color, changeColor, selectedColor}) => {
 	return (
 		<View style={{flexDirection: 'row', paddingVertical: 2 }}>
@@ -13,7 +14,8 @@ const ColorList = ({color, changeColor, selectedColor}) => {
 						style['borderColor'] = '#d6d7da'
 					}
 					return (
-						<TouchableOpacity onPress={() => changeColor(item)} key={`color-${index}`}>
+						<TouchableOpacity onPress={() => changeColor(item)}
+							 key={`color-${index}`}>
 							<View style={style} />
 						</TouchableOpacity>
 					)
