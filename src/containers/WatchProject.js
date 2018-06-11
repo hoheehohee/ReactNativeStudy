@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, DatePickerIOS, ActionSheetIOS, Alert, TouchableOpacity, Animated } from 'react-native';
 import { Icon, ActionSheet } from 'native-base';
-import { ColorList } from '../components';
+import { ColorList, Footer } from '../components';
 import moment from 'moment-timezone';
 moment.tz('Asia/Seoul').format();
 
@@ -128,7 +128,7 @@ class WatchProject extends Component {
 					? (
 						<Animated.View style={{
 							...this.props.style,
-          		opacity: fadeAnim,
+          					opacity: fadeAnim,
 							flex: 1, flexDirection: 'column', width: '100%',
 							alignItems: 'flex-end', marginTop: 55, paddingRight: 50,
 							position: 'absolute', zIndex: 9}}>
@@ -145,14 +145,12 @@ class WatchProject extends Component {
 						</Animated.View>
 					): null
 				}
-
-        <View style={{
+				<View style={{ 
 					flex: 9,
 					flexDirection: 'column',
-        	justifyContent: 'center',
-        	alignItems: 'center',
-					marginBottom: 65
-				}}>
+					justifyContent: 'center',
+					alignItems: 'center',
+					marginBottom: 65 }}>
 					<View>
 						<Text style={{color: color, textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>
 							{
@@ -166,6 +164,7 @@ class WatchProject extends Component {
 						</Text>
 					</View>
 				</View>
+				<Footer.Main />
 			</View>
 		);
 	}
