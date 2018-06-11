@@ -41,6 +41,7 @@ class WatchProject extends Component {
 			default: result = day;
 		}
 		return result
+		
 	}
 
 	TimerFunc = async() => {
