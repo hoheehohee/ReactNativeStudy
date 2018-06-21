@@ -1,9 +1,37 @@
 import React, { Component } from 'react';
-import { View, Text, DatePickerIOS, ActionSheetIOS, Alert, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, Alert, Animated } from 'react-native';
 import { Icon, ActionSheet } from 'native-base';
 import { ColorList, Footer } from '../components';
+import { Alarm } from '../components/Alarm';
+import { Navigation } from 'react-native-navigation';
 import moment from 'moment-timezone';
 moment.tz('Asia/Seoul').format();
+
+// Navigation.startTabBasedApp({
+//   tabs: [
+//     {
+//       label: 'One',
+//       screen: 'WatchProject',
+//       title: 'Screen One'
+//     },
+//     {
+//       label: 'Two',
+//       screen: 'Alarm',
+//       title: 'Screen One'
+//     },
+//   ]
+// })
+Navigation.registerComponent('firstTabScreen', () => Alarm);
+Navigation.registerComponent('watchProject', () => WatchProject);
+Navigation.startTabBasedApp({
+  tabs: [
+    {
+      label: 'Alarm',
+      screen: 'firstTabScreen',
+      title: 'Screen One'
+    }
+  ]
+});
 
 class WatchProject extends Component {
 
@@ -21,12 +49,26 @@ class WatchProject extends Component {
 	}
 
 	componentWillMount() {
-		this.TimerFunc();
+    // this.registerScreens();
+		// this.TimerFunc();
 	}
 
 	componentWillUnmount() {
 		clearInterval(this.timerID);
 	}
+
+  // registerScreens = () => {
+  //   Navigation.registerComponent('Alarm', () => Alarm);
+  //   // Navigation.registerComponent('WatchProject', () => WatchProject);
+  // }
+
+  test = () => {
+    console.log('####: test');
+    this.props.navigator.push({
+      screen: 'firstTabScreen',
+      title: 'Pushed Screen'
+    });
+  }
 
 	formatDayFunc = (day) => {
 		let result = day;
@@ -165,7 +207,10 @@ class WatchProject extends Component {
 						</Text>
 					</View>
 				</View>
-				<Footer.Main />
+        <Alarm />
+				<Footer.Main 
+          test={this.test}
+        />
 			</View>
 		);
 	}

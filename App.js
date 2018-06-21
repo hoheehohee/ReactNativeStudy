@@ -10,7 +10,6 @@ import {
   WatchProject
 } from './src';
 
-
 import {
   Platform,
   StyleSheet,
@@ -31,18 +30,18 @@ export default class App extends Component {
 
   render() {
     return (
-      <NavigatorIOS
-        initialRoute={{
-          component: MyView,
-          title: 'Main',
-          passProps: {index: 1},
-        }}
-        style={{flex: 1}}
-      />
+      <WatchProject />
+      // <NavigatorIOS
+      //   initialRoute={{
+      //     component: MyView,
+      //     title: 'Main',
+      //     passProps: {index: 1},
+      //   }}
+      //   style={{flex: 1}}
+      // />
     );
   }
 }
-
 class MyView extends Component {
 
   move = () => {

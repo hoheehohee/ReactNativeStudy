@@ -10,19 +10,24 @@ export default class Main extends Component {
 
   render() {
 
+    const { test } = this.props;
     const items = [
       { name: 'main' },
       { name: 'watch' },
       { name: 'alarm' }
     ];
-
+    console.log(test);
     return (
       <View style={styles.MainView}>
       {
         items.map((value, index) => {
           console.log(value);
           return ( 
-          <Item key={index} style={styles.MainRow}/>
+          <Item 
+            key={index} 
+            style={styles.MainRow}
+            test={test}
+          />
           )
         })
       }

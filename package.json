@@ -13,7 +13,8 @@
     "native-base": "^2.4.4",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.2",
-    "react-native-material-design": "^0.3.7"
+    "react-native-material-design": "^0.3.7",
+    "react-native-navigation": "^1.1.471"
   },
   "devDependencies": {
     "babel-jest": "23.0.0-alpha.0",
